@@ -23,7 +23,7 @@ float[] volumeSettings;
 // Called once at the beginning
 void setup() {
   
-  size(720, 576);
+  size(670, 530);
   background(51);
   
   // Smoothing the edges of the window
@@ -61,6 +61,13 @@ void setup() {
 // Loops at a fixed frequency
 void draw() {
    background(200, 200, 200);
+   // Drawing the Pad Controller delimiters
+   fill(color(255,0,0));
+   rect(10, 10, 650, 160);
+   fill(color(0,255,0));
+   rect(10, 185, 650, 160);
+   fill(color(0,0,255));
+   rect(10, 360, 650, 160);
 }
  
 
@@ -93,11 +100,17 @@ void controlEvent(ControlEvent theEvent) {
     }
   }
   
-  /*println(id, name, value);
-  OscMessage message = new OscMessage("/pos");
+  // Building the OSC message to be sent to the specific synth address
+  OscMessage message = new OscMessage("/main/synth"+id);
+  message.add(volumeSettings[id]);
+  message.add(bassSettings[id]);
+  message.add(middleSettings[id]);
+  message.add(trebleSettings[id]);
+  message.add(soundSettings[id]);
   
   oscP5.send(message, remoteAddress);
-  message.print();*/
+  // DEBUG
+  message.print();
 }
 
 /** This Class contains the definition of all the knobs needed
@@ -111,45 +124,45 @@ class PadController {
   
   PadController(int id, int x, int y, ControlP5 cp5) {
     volume_knob = cp5.addKnob("volume")
-    .setId(id)
-    .setPosition(x, y + 20)
-    .setRadius(50)
-    .setRange(0, 1)
-    .setValue(1)
-    .setColorCaptionLabel(color(20,20,20));
+      .setId(id)
+      .setPosition(x, y + 10)
+      .setRadius(50)
+      .setRange(0, 1)
+      .setValue(1)
+      .setColorCaptionLabel(color(20,20,20));
         
-  bass_knob = cp5.addKnob("bass")
-    .setPosition(x + 125, y + 20)
-    .setId(id)
-    .setRadius(50)
-    .setRange(-20, 20)
-    .setValue(0)
-    .setColorCaptionLabel(color(20,20,20));
+    bass_knob = cp5.addKnob("bass")
+      .setPosition(x + 125, y + 10)
+      .setId(id)
+      .setRadius(50)
+      .setRange(-20, 20)
+      .setValue(0)
+      .setColorCaptionLabel(color(20,20,20));
     
-  middle_knob = cp5.addKnob("middle")
-    .setPosition(x + 250, y + 20)
-    .setId(id)
-    .setRadius(50)
-    .setRange(-20, 20)
-    .setValue(0)
-    .setColorCaptionLabel(color(20,20,20));
+    middle_knob = cp5.addKnob("middle")
+      .setPosition(x + 250, y + 10)
+      .setId(id)
+      .setRadius(50)
+      .setRange(-20, 20)
+      .setValue(0)
+      .setColorCaptionLabel(color(20,20,20));
     
-  treble_knob = cp5.addKnob("treble")
-    .setPosition(x + 375, y + 20)
-    .setId(id)
-    .setRadius(50)
-    .setRange(-20, 20)
-    .setValue(0)
-    .setColorCaptionLabel(color(20,20,20));
+    treble_knob = cp5.addKnob("treble")
+      .setPosition(x + 375, y + 10)
+      .setId(id)
+      .setRadius(50)
+      .setRange(-20, 20)
+      .setValue(0)
+      .setColorCaptionLabel(color(20,20,20));
     
-  List synths = Arrays.asList("kick", "snare", "closed hh");
-  sound_list = cp5.addScrollableList("sound")
-    .setPosition(x + 500, y + 20)
-    .setId(id)
-    .setSize(100, 40)
-    .setBarHeight(20)
-    .setItemHeight(20)
-    .setValue(0)
-    .addItems(synths);
+    List synths = Arrays.asList("kick", "snare", "closed hh");
+    sound_list = cp5.addScrollableList("sound")
+      .setPosition(x + 500, y + 10)
+      .setId(id)
+      .setSize(100, 40)
+      .setBarHeight(20)
+      .setItemHeight(20)
+      .setValue(0)
+      .addItems(synths);
   }
 }
