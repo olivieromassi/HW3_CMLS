@@ -192,6 +192,7 @@ class PadController {
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
     
+    // TODO: fix properly the slider range
     a_slider = cp5.addSlider("A")
       .setPosition(x + 480, y + 10)
       .setId(id)
@@ -201,6 +202,7 @@ class PadController {
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
     
+    // TODO: fix properly the slider range
     d_slider = cp5.addSlider("D")
       .setPosition(x + 515, y + 10)
       .setId(id)
@@ -210,6 +212,7 @@ class PadController {
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
       
+    // TODO: fix properly the slider range  
     s_slider = cp5.addSlider("S")
       .setPosition(x + 550, y + 10)
       .setId(id)
@@ -218,7 +221,8 @@ class PadController {
       .setRange(0, 0.1)
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
-      
+     
+    // TODO: fix properly the slider range
     r_slider = cp5.addSlider("R")
       .setPosition(x + 585, y + 10)
       .setId(id)
