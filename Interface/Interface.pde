@@ -14,8 +14,9 @@ ControlP5 cp1, cp2, cp3;
 PadController pad1, pad2, pad3;
 
 // Arrays representing the state of the pads
-int[] lpSettings;
-int[] hpSettings;
+int[] bassSettings;
+int[] middleSettings;
+int[] trebleSettings;
 int[] soundSettings;
 float[] volumeSettings;
 
@@ -39,8 +40,9 @@ void setup() {
   // Every OSC message will be sent to this socket
   remoteAddress = new NetAddress("127.0.0.1", 57120);
   
-  lpSettings = new int[3];
-  hpSettings = new int[3];
+  bassSettings = new int[3];
+  middleSettings = new int[3];
+  trebleSettings = new int[3];
   soundSettings = new int[3];
   volumeSettings = new float[3];
   
@@ -73,12 +75,16 @@ void controlEvent(ControlEvent theEvent) {
       volumeSettings[id] = value;
       break;
     }
-    case "lpFreq": {
-      lpSettings[id] = (int)value;
+    case "bass": {
+      bassSettings[id] = (int)value;
       break;
     } 
-    case "hpFreq": {
-      hpSettings[id] = (int)value;
+    case "middle": {
+      middleSettings[id] = (int)value;
+      break;
+    }
+    case "treble": {
+      trebleSettings[id] = (int)value;
       break;
     }
     case "sound": {
@@ -86,7 +92,6 @@ void controlEvent(ControlEvent theEvent) {
       break;
     }
   }
-  
   
   /*println(id, name, value);
   OscMessage message = new OscMessage("/pos");
@@ -99,8 +104,9 @@ void controlEvent(ControlEvent theEvent) {
 * to properly set the sound behaviour of the drumkit pads */
 class PadController {
   Knob volume_knob;
-  Knob lowpass_knob;
-  Knob hipass_knob;
+  Knob bass_knob;
+  Knob middle_knob;
+  Knob treble_knob;
   ScrollableList sound_list;
   
   PadController(int id, int x, int y, ControlP5 cp5) {
@@ -112,25 +118,33 @@ class PadController {
     .setValue(1)
     .setColorCaptionLabel(color(20,20,20));
         
-  lowpass_knob = cp5.addKnob("lpFreq")
+  bass_knob = cp5.addKnob("bass")
     .setPosition(x + 125, y + 20)
     .setId(id)
     .setRadius(50)
-    .setRange(3000, 20000)
-    .setValue(20000)
+    .setRange(-20, 20)
+    .setValue(0)
     .setColorCaptionLabel(color(20,20,20));
     
-  hipass_knob = cp5.addKnob("hpFreq")
+  middle_knob = cp5.addKnob("middle")
     .setPosition(x + 250, y + 20)
     .setId(id)
     .setRadius(50)
-    .setRange(0, 350)
-    .setValue(20)
+    .setRange(-20, 20)
+    .setValue(0)
+    .setColorCaptionLabel(color(20,20,20));
+    
+  treble_knob = cp5.addKnob("treble")
+    .setPosition(x + 375, y + 20)
+    .setId(id)
+    .setRadius(50)
+    .setRange(-20, 20)
+    .setValue(0)
     .setColorCaptionLabel(color(20,20,20));
     
   List synths = Arrays.asList("kick", "snare", "closed hh");
   sound_list = cp5.addScrollableList("sound")
-    .setPosition(x + 375, y + 20)
+    .setPosition(x + 500, y + 20)
     .setId(id)
     .setSize(100, 40)
     .setBarHeight(20)
