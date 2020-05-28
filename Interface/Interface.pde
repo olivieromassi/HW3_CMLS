@@ -3,7 +3,7 @@ import oscP5.*;
 import netP5.*;
 import java.util.*;
 
-// Variable declaration
+/** Variables declaration **/
 OscP5 oscP5;
 NetAddress remoteAddress;
 
@@ -23,14 +23,14 @@ float[] volumeSettings;
 // Called once at the beginning
 void setup() {
   
+  // Setting window size and color
   size(670, 530);
-  background(51);
+  background(200, 200, 200);
   
   // Smoothing the edges of the window
   smooth();
   
   noStroke();
-  
   frameRate(60);
   
   // The OSC object is listening to the port 12000
@@ -60,14 +60,14 @@ void setup() {
 
 // Loops at a fixed frequency
 void draw() {
-   background(200, 200, 200);
+   //
    // Drawing the Pad Controller delimiters
    fill(color(255,0,0));
-   rect(10, 10, 650, 160);
+   rect(10, 10, 650, 160, 10);
    fill(color(0,255,0));
-   rect(10, 185, 650, 160);
+   rect(10, 185, 650, 160, 10);
    fill(color(0,0,255));
-   rect(10, 360, 650, 160);
+   rect(10, 360, 650, 160, 10);
 }
  
 
