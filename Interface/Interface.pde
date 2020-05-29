@@ -20,9 +20,11 @@ int[] trebleSettings;
 int[] soundSettings;
 float[] volumeSettings;
 float[] attackSettings;
-float[] decaySettings;
-float[] sustainSettings;
 float[] releaseSettings;
+int[] curveSettings;
+
+// Variable for the font
+PFont f;
 
 // Called once at the beginning
 void setup() {
@@ -51,9 +53,8 @@ void setup() {
   
   // Envelope settings
   attackSettings = new float[3];
-  decaySettings = new float[3];
-  sustainSettings = new float[3];
   releaseSettings = new float[3];
+  curveSettings = new int[3];  
   
   // Sound synth choice
   soundSettings = new int[3];
@@ -69,18 +70,44 @@ void setup() {
   pad2 = new PadController(1, 25, 200, cp2);
   pad3 = new PadController(2, 25, 375, cp3);
   
+  // Creating Font for Labels
+  f = createFont("Broadway", 18, true);
+  textFont(f);
 }
 
 // Loops at a fixed frequency
 void draw() {
-   //
    // Drawing the Pad Controller delimiters
    fill(color(255,0,0));
    rect(10, 10, 750, 160, 10);
+   
+   fill(0);
+   text("Equalizer", 270, 155);
+  
+   rect(150, 30, 330, 100, 10);
+   
+   text("Envelope", 520, 155);
+    
    fill(color(0,255,0));
    rect(10, 185, 750, 160, 10);
+   
+   fill(0);
+   text("Equalizer", 270, 330);
+   
+   rect(150, 205, 330, 100, 10);
+   
+   text("Envelope", 520, 330);
+
    fill(color(0,0,255));
    rect(10, 360, 750, 160, 10);
+   
+   fill(0);
+   text("Equalizer", 270, 505);
+   
+   rect(150, 380, 330, 100, 10);
+   
+   text("Envelope", 520, 505);
+
 }
  
 
@@ -111,18 +138,14 @@ void controlEvent(ControlEvent theEvent) {
       attackSettings[id] = value;
       break;
     }
-    case "D": {
-      decaySettings[id] = value;
-      break;
-    }
-    case "S": {
-      sustainSettings[id] = value;
-      break;
-    }
     case "R": {
       releaseSettings[id] = value;
       break;
     }
+    case "curve": {
+      curveSettings[id] = (int)value;
+      break;
+    } 
     case "sound": {
       soundSettings[id] = (int)value;
       break;
@@ -136,9 +159,8 @@ void controlEvent(ControlEvent theEvent) {
   message.add(middleSettings[id]);
   message.add(trebleSettings[id]);
   message.add(attackSettings[id]);
-  message.add(decaySettings[id]);
-  message.add(sustainSettings[id]);
   message.add(releaseSettings[id]);
+  message.add(curveSettings[id]);
   message.add(soundSettings[id]);
   
   oscP5.send(message, remoteAddress);
@@ -154,9 +176,8 @@ class PadController {
   Knob middle_knob;
   Knob treble_knob;
   Slider a_slider;
-  Slider d_slider;
-  Slider s_slider;
   Slider r_slider;
+  Slider curve_slider;
   ScrollableList sound_list;
   
   PadController(int id, int x, int y, ControlP5 cp5) {
@@ -174,7 +195,8 @@ class PadController {
       .setRadius(40)
       .setRange(-20, 20)
       .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
+      
+      .setColorCaptionLabel(color(255,255,255));
     
     middle_knob = cp5.addKnob("middle")
       .setPosition(x + 250, y + 10)
@@ -182,7 +204,7 @@ class PadController {
       .setRadius(40)
       .setRange(-20, 20)
       .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
+      .setColorCaptionLabel(color(255,255,255));
     
     treble_knob = cp5.addKnob("treble")
       .setPosition(x + 360, y + 10)
@@ -190,45 +212,33 @@ class PadController {
       .setRadius(40)
       .setRange(-20, 20)
       .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
+      .setColorCaptionLabel(color(255,255,255));
     
-    // TODO: fix properly the slider range
     a_slider = cp5.addSlider("A")
-      .setPosition(x + 480, y + 10)
+      .setPosition(x + 500, y + 10)
       .setId(id)
       .setWidth(10)
-      .setHeight(100)
-      .setRange(0, 0.1)
+      .setHeight(80)
+      .setRange(0, 0.2)
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
     
-    // TODO: fix properly the slider range
-    d_slider = cp5.addSlider("D")
-      .setPosition(x + 515, y + 10)
+    r_slider = cp5.addSlider("R")
+      .setPosition(x + 535, y + 10)
       .setId(id)
       .setWidth(10)
-      .setHeight(100)
-      .setRange(0, 0.1)
-      .setValue(0)
+      .setHeight(80)
+      .setRange(0.05, 1)
+      .setValue(1)
       .setColorCaptionLabel(color(20,20,20));
       
-    // TODO: fix properly the slider range  
-    s_slider = cp5.addSlider("S")
-      .setPosition(x + 550, y + 10)
+    // TODO: fix tickmarks 
+    curve_slider = cp5.addSlider("curve")
+      .setPosition(x + 570, y + 10)
       .setId(id)
       .setWidth(10)
-      .setHeight(100)
-      .setRange(0, 0.1)
-      .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
-     
-    // TODO: fix properly the slider range
-    r_slider = cp5.addSlider("R")
-      .setPosition(x + 585, y + 10)
-      .setId(id)
-      .setWidth(10)
-      .setHeight(100)
-      .setRange(0, 0.1)
+      .setHeight(80)
+      .setRange(-5, 5)
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
       
