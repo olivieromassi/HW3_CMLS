@@ -85,39 +85,29 @@ void draw() {
    fill(color(255,0,0));
    rect(10, 10, 750, 160, 10);
    
-   fill(0);
-   text("Equalizer", 270, 155);
-  
-   noFill();
-   rect(150, 25, 330, 110, 10);
-   
-   text("Envelope", 525, 155);
-   rect(510, 25, 115, 110, 10);
-    
    fill(color(0,255,0));
    rect(10, 185, 750, 160, 10);
    
-   fill(0);
-   text("Equalizer", 270, 330);
-   
-   noFill();
-   rect(150, 200, 330, 110, 10);
-   
-   text("Envelope", 525, 330);
-   rect(510, 200, 115, 110, 10);
-
    fill(color(0,0,255));
    rect(10, 360, 750, 160, 10);
    
    fill(0);
+   text("Equalizer", 270, 155);
+   text("Equalizer", 270, 330);
    text("Equalizer", 270, 505);
-   
-   noFill();
-   rect(150, 375, 330, 110, 10);
-   
+   text("Envelope", 525, 155);
+   text("Envelope", 525, 330);
    text("Envelope", 525, 505);
-   rect(510, 375, 115, 110, 10);
+  
+   fill(70);
+   rect(150, 25, 330, 110, 10);
+   rect(510, 25, 115, 110, 10);
+    
+   rect(150, 200, 330, 110, 10);
+   rect(510, 200, 115, 110, 10);
 
+   rect(150, 375, 330, 110, 10);
+   rect(510, 375, 115, 110, 10);
 }
  
 
