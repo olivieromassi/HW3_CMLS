@@ -242,7 +242,7 @@ class PadController {
       .setValue(0)
       .setColorCaptionLabel(color(20,20,20));
       
-    List synths = Arrays.asList("kick", "snare", "closed hh");
+    List synths = Arrays.asList("kick", "snare", "hh", "htom", "mtom", "ltom");
     sound_list = cp5.addScrollableList("sound")
       .setPosition(x + 620, y + 10)
       .setId(id)
