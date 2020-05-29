@@ -36,7 +36,6 @@ void setup() {
   // Smoothing the edges of the window
   smooth();
   
-  noStroke();
   frameRate(60);
   
   // The OSC object is listening to the port 12000
@@ -73,20 +72,27 @@ void setup() {
   // Creating Font for Labels
   f = createFont("Broadway", 18, true);
   textFont(f);
+  
+  // Setting Stroke dimension
+  strokeWeight(3);
 }
 
 // Loops at a fixed frequency
 void draw() {
    // Drawing the Pad Controller delimiters
+   
+   
    fill(color(255,0,0));
    rect(10, 10, 750, 160, 10);
    
    fill(0);
    text("Equalizer", 270, 155);
   
-   rect(150, 30, 330, 100, 10);
+   noFill();
+   rect(150, 25, 330, 110, 10);
    
-   text("Envelope", 520, 155);
+   text("Envelope", 525, 155);
+   rect(510, 25, 115, 110, 10);
     
    fill(color(0,255,0));
    rect(10, 185, 750, 160, 10);
@@ -94,9 +100,11 @@ void draw() {
    fill(0);
    text("Equalizer", 270, 330);
    
-   rect(150, 205, 330, 100, 10);
+   noFill();
+   rect(150, 200, 330, 110, 10);
    
-   text("Envelope", 520, 330);
+   text("Envelope", 525, 330);
+   rect(510, 200, 115, 110, 10);
 
    fill(color(0,0,255));
    rect(10, 360, 750, 160, 10);
@@ -104,9 +112,11 @@ void draw() {
    fill(0);
    text("Equalizer", 270, 505);
    
-   rect(150, 380, 330, 100, 10);
+   noFill();
+   rect(150, 375, 330, 110, 10);
    
-   text("Envelope", 520, 505);
+   text("Envelope", 525, 505);
+   rect(510, 375, 115, 110, 10);
 
 }
  
@@ -221,7 +231,7 @@ class PadController {
       .setHeight(80)
       .setRange(0, 0.2)
       .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
+      .setColorCaptionLabel(color(255));
     
     r_slider = cp5.addSlider("R")
       .setPosition(x + 535, y + 10)
@@ -230,7 +240,7 @@ class PadController {
       .setHeight(80)
       .setRange(0.05, 1)
       .setValue(1)
-      .setColorCaptionLabel(color(20,20,20));
+      .setColorCaptionLabel(color(255));
       
     // TODO: fix tickmarks 
     curve_slider = cp5.addSlider("curve")
@@ -240,7 +250,7 @@ class PadController {
       .setHeight(80)
       .setRange(-5, 5)
       .setValue(0)
-      .setColorCaptionLabel(color(20,20,20));
+      .setColorCaptionLabel(color(255));
       
     List synths = Arrays.asList("kick", "snare", "hh", "htom", "mtom", "ltom");
     sound_list = cp5.addScrollableList("sound")
