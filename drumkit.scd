@@ -19,9 +19,9 @@ SynthDef(\kick, {
     boom = BBandPass.ar(WhiteNoise.ar(10),freq:Line.ar(100,20,nl))*Line.ar(1,0,nl)*n+SinOsc.ar(Line.ar(start, end, l1))*e;
 	boom = boom*gen;
 
-	boom = BPeakEQ(boom, 100, 1.0, bass);
-	boom = BPeakEQ(boom, 600, 1.0, middle);
-	boom = BPeakEQ(boom, 1000, 1.0, treble);
+	boom = BPeakEQ.ar(boom, 100, 1.0, bass);
+	boom = BPeakEQ.ar(boom, 600, 1.0, middle);
+	boom = BPeakEQ.ar(boom, 1000, 1.0, treble);
 
     Out.ar(0,[boom,boom]);
 }).add;
@@ -48,9 +48,9 @@ SynthDef(\snare, {
     snd = Pan2.ar(snd, \pan.kr(0), \amp.kr(0.1));
 	snd = snd * gen;
 
-	snd = BPeakEQ(snd, 100, 1.0, bass);
-	snd = BPeakEQ(snd, 600, 1.0, middle);
-	snd = BPeakEQ(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
+	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
+	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
 
     Out.ar(\out.kr(0), snd);
 }).add;
@@ -76,9 +76,9 @@ SynthDef(\htom, {
     snd = Pan2.ar(snd, \pan.kr(0), \amp.kr(0.1));
 	snd = snd * gen;
 
-	snd = BPeakEQ(snd, 100, 1.0, bass);
-	snd = BPeakEQ(snd, 600, 1.0, middle);
-	snd = BPeakEQ(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
+	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
+	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
 
     Out.ar(\out.kr(0), snd);
 }).add;
@@ -100,9 +100,9 @@ SynthDef(\mtom, {
 	var snd =  (noiseOsc * noiseEnv +clickOsc *clickEnv);
 	snd = snd * gen;
 
-	snd = BPeakEQ(snd, 100, 1.0, bass);
-	snd = BPeakEQ(snd, 600, 1.0, middle);
-	snd = BPeakEQ(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
+	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
+	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd, 0, 1));
 }).add;
@@ -124,9 +124,9 @@ SynthDef(\ltom, {
 	var snd =  (noiseOsc * noiseEnv +clickOsc *clickEnv);
 	snd = snd * gen;
 
-	snd = BPeakEQ(snd, 100, 1.0, bass);
-	snd = BPeakEQ(snd, 600, 1.0, middle);
-	snd = BPeakEQ(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
+	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
+	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd, 0, 1));
 }).add;
@@ -152,9 +152,9 @@ SynthDef(\hh, {
     snd = son*0.02+noiseOsc * noiseEnv * 2;
 	snd = snd * gen;
 
-	snd = BPeakEQ(snd, 100, 1.0, bass);
-	snd = BPeakEQ(snd, 600, 1.0, middle);
-	snd = BPeakEQ(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
+	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
+	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd*10, 0, 1));
 }).add;
@@ -212,9 +212,27 @@ drums = Array.newClear(3);
 	});
 
 	case(chan,
-		0, {node = Synth(~sound0);},
-		1, {node = Synth(~sound1);},
-		2, {node = Synth(~sound2);}
+		0, {node = Synth.tail(nil, ~sound0, [\volume,~volume0,
+			\bass, ~bass0,
+			\middle, ~middle0,
+			\treble, ~treble0,
+			\attack, ~attack0,
+			\release, ~release0,
+			\curve, ~curve0]);},
+		1, {node = Synth.tail(nil, ~sound1, [\volume,~volume1,
+			\bass, ~bass1,
+			\middle, ~middle1,
+			\treble, ~treble1,
+			\attack, ~attack1,
+			\release, ~release1,
+			\curve, ~curve1]);},
+		2, {node = Synth.tail(nil, ~sound2, [\volume,~volume2,
+			\bass, ~bass2,
+			\middle, ~middle2,
+			\treble, ~treble2,
+			\attack, ~attack2,
+			\release, ~release2,
+			\curve, ~curve2]);}
 	);
 
 	drums.put(chan, node);
