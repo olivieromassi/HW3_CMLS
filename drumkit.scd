@@ -7,6 +7,7 @@ MIDIIn.connectAll;
 NetAddr("127.0.0.1", 57120);
 
 (
+<<<<<<< HEAD
 var drums;
 
 ~volume0 = 1.0;
@@ -66,6 +67,23 @@ drums = Array.newClear(3);
 };
 
 MIDIIn.addFuncTo(\noteOn, ~noteOnFunc);
+=======
+/** MIDI interaction code **/
+
+MIDIFunc.noteOn({
+	arg veloc, num, chan, src;
+	d = case
+	{chan==0}{\cassa}
+	{chan==1}{\snare}
+	{chan==2}{\hh}
+	{chan==3}{\Htom}
+	{chan==4}{\Mtom}
+	{chan==5}{\Ltom};
+
+	Synth(d);
+	//d.postln
+});
+>>>>>>> f0ef1441185407719b0336ab514b86df1d8f650c
 
 /** OSC interaction code **/
 OSCdef('synth0', {
@@ -102,6 +120,7 @@ OSCdef('synth2', {
 	arg msg;
 	/** Assign the values in the msg to the global variables */
 	/* of each drum pad synth*/
+<<<<<<< HEAD
 	~volume2 = msg[1];
 	~bass2 = msg[2];
 	~middle2 = msg[3];
@@ -113,3 +132,7 @@ OSCdef('synth2', {
 
 },"main/synth2");
 )
+=======
+},"main/synth2")
+)
+>>>>>>> f0ef1441185407719b0336ab514b86df1d8f650c
