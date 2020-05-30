@@ -7,6 +7,160 @@ MIDIIn.connectAll;
 NetAddr("127.0.0.1", 57120);
 
 (
+SynthDef(\kick, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+    var  n=0.8, nl = 0.008, start=80, end=15, l1=0.3, l2=1, exp=0.8;
+    var boom;
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+    e = pow(Line.ar(0.9,0,l2),exp);
+    boom = BBandPass.ar(WhiteNoise.ar(10),freq:Line.ar(100,20,nl))*Line.ar(1,0,nl)*n+SinOsc.ar(Line.ar(start, end, l1))*e;
+	boom = boom*gen;
+
+	boom = BPeakEQ(boom, 100, 1.0, bass);
+	boom = BPeakEQ(boom, 600, 1.0, middle);
+	boom = BPeakEQ(boom, 1000, 1.0, treble);
+
+    Out.ar(0,[boom,boom]);
+}).add;
+
+
+SynthDef(\snare, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+	var snd;
+
+    // a percussive click to give it some attack
+    snd = LPF.ar(HPF.ar(WhiteNoise.ar, 350), 8000) * Env.linen(0.001, 0.01, 0.001).ar;
+    // sine sweep body. very important!
+    snd = snd + (SinOsc.ar(Env([400, 200, 6], [0.01, 0.1], \exp).ar) * Env.perc(0.004, 0.2).ar * 6.dbamp).tanh;
+    // sound of snare coils rattling
+    snd = snd + (HPF.ar(BPeakEQ.ar(WhiteNoise.ar, 4000, 0.5, 3), 300) * Env.perc(0.05, 0.4).delay(0.01).ar(2) * -3.dbamp);
+    // another sound sweep to improve the attack, optional
+    snd = snd + (SinOsc.ar(XLine.kr(350, 215, 0.01)) * Env.perc(0.001, 0.02).ar);
+    // distortion helps glue everything together and acts as a compressor
+    snd = (snd * 1.4).tanh;
+    snd = Pan2.ar(snd, \pan.kr(0), \amp.kr(0.1));
+	snd = snd * gen;
+
+	snd = BPeakEQ(snd, 100, 1.0, bass);
+	snd = BPeakEQ(snd, 600, 1.0, middle);
+	snd = BPeakEQ(snd, 1000, 1.0, treble);
+
+    Out.ar(\out.kr(0), snd);
+}).add;
+
+SynthDef(\htom, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+	var snd;
+
+    // a percussive click to give it some attack
+    snd = LPF.ar(HPF.ar(WhiteNoise.ar, 300), 8000) * Env.linen(0.001, 0.01, 0.001).ar;
+    // sine sweep body. very important!
+    snd = snd + (SinOsc.ar(Env([400, 300, 1], [0.001, 1], \exp).ar) * Env.perc(0.01, 0.15).ar * 2.dbamp).tanh;
+    // sound of snare coils rattling
+    snd = snd + (HPF.ar(BPeakEQ.ar(WhiteNoise.ar, 10, 0.5, 3), 0.03) * Env.perc(0.005, 0.2).delay(0.01).ar(2) * -3.dbamp);
+    // another sound sweep to improve the attack, optional
+    snd = snd + (SinOsc.ar(XLine.kr(3000, 1500, 0.01)) * Env.perc(0.001, 0.02).ar);
+    // distortion helps glue everything together and acts as a compressor
+    snd = (snd * 1.4).tanh;
+    snd = Pan2.ar(snd, \pan.kr(0), \amp.kr(0.1));
+	snd = snd * gen;
+
+	snd = BPeakEQ(snd, 100, 1.0, bass);
+	snd = BPeakEQ(snd, 600, 1.0, middle);
+	snd = BPeakEQ(snd, 1000, 1.0, treble);
+
+    Out.ar(\out.kr(0), snd);
+}).add;
+
+SynthDef(\mtom, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+
+    var startPitch = 200, endPitch=150, clickLevel=0.7, pitchRel = 0.27, noiseLevel=1, noiseRel= 0.3;
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+    var pitchEnv = EnvGen.ar(Env.perc(0.01, pitchRel));
+
+    var clickOsc = SinOsc.ar(pitchEnv*(startPitch-endPitch)+endPitch);
+    var clickEnv = EnvGen.ar(Env.perc(0.001, pitchRel))*clickLevel;
+    var noiseOsc = PinkNoise.ar();
+    var noiseEnv = EnvGen.ar(Env.perc(0.01, noiseRel))*noiseLevel;
+	var snd =  (noiseOsc * noiseEnv +clickOsc *clickEnv);
+	snd = snd * gen;
+
+	snd = BPeakEQ(snd, 100, 1.0, bass);
+	snd = BPeakEQ(snd, 600, 1.0, middle);
+	snd = BPeakEQ(snd, 1000, 1.0, treble);
+
+    Out.ar(0,Pan2.ar(snd, 0, 1));
+}).add;
+
+SynthDef(\ltom, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+
+    var startPitch = 155, endPitch=60, clickLevel=0.7, pitchRel = 0.4, noiseLevel=1, noiseRel= 0.3;
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+    var pitchEnv = EnvGen.ar(Env.perc(0.01, pitchRel));
+
+    var clickOsc = SinOsc.ar(pitchEnv*(startPitch-endPitch)+endPitch);
+    var clickEnv = EnvGen.ar(Env.perc(0.001, pitchRel))*clickLevel;
+    var noiseOsc = PinkNoise.ar();
+    var noiseEnv = EnvGen.ar(Env.perc(0.01, noiseRel))*noiseLevel;
+	var snd =  (noiseOsc * noiseEnv +clickOsc *clickEnv);
+	snd = snd * gen;
+
+	snd = BPeakEQ(snd, 100, 1.0, bass);
+	snd = BPeakEQ(snd, 600, 1.0, middle);
+	snd = BPeakEQ(snd, 1000, 1.0, treble);
+
+    Out.ar(0,Pan2.ar(snd, 0, 1));
+}).add;
+
+SynthDef(\hh, {
+	arg volume=1.0, bass=0.0, middle=0.0, treble=0.0, attack=0.0, release=1.0, curve=0;
+
+	var noiseRel = 0.5, noiseLevel=0.6, ffreq=10000, q=(-4);
+    var noiseOsc = BBandPass.ar(PinkNoise.ar(), ffreq, 0.2);
+    var noiseEnv = EnvGen.ar(Env.perc(0.001, noiseRel, noiseLevel, q));
+
+	var env = Env.perc(attack, release, volume, curve);
+	var gen = EnvGen.kr(env);
+
+	var son,snd;
+	son = Klank.ar(`[
+		[1400, 7000, 4900, 3800, 700, 5500,7900, 7320, 9340],  // freqs
+		[0.25,0.2,0.15,0.1, 0.1, 0.1,0.1, 0.1, 0.1],// amps
+		[0.2, 0.2, 0.2,0.2, 0.2, 0.2,0.4, 0.4, 0.5]   // ring times
+		],
+	Impulse.ar(1));
+
+    snd = son*0.02+noiseOsc * noiseEnv * 2;
+	snd = snd * gen;
+
+	snd = BPeakEQ(snd, 100, 1.0, bass);
+	snd = BPeakEQ(snd, 600, 1.0, middle);
+	snd = BPeakEQ(snd, 1000, 1.0, treble);
+
+    Out.ar(0,Pan2.ar(snd*10, 0, 1));
+}).add;
+)
+
+(
 var drums;
 
 ~volume0 = 1.0;
@@ -41,7 +195,7 @@ var drums;
 ~sound1;
 ~sound2;
 
-~sounds = Array.with('\kick', '\snare', '\hh', '\htom', '\mtom', '\ltom');
+~sounds = Array.with(\kick, \snare, \hh, \htom, \mtom, \ltom);
 
 /** MIDI interaction code **/
 
@@ -49,6 +203,7 @@ drums = Array.newClear(3);
 
 ~noteOnFunc = {
 	arg src, chan, num, vel;
+	var node;
 	node = drums.at(chan);
 
 	if (node.notNil, {
