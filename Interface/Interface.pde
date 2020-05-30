@@ -232,7 +232,6 @@ class PadController {
       .setValue(1)
       .setColorCaptionLabel(color(255));
       
-    // TODO: fix tickmarks 
     curve_slider = cp5.addSlider("curve")
       .setPosition(x + 570, y + 10)
       .setId(id)
@@ -240,6 +239,9 @@ class PadController {
       .setHeight(80)
       .setRange(-5, 5)
       .setValue(0)
+      .setNumberOfTickMarks(11)
+      .snapToTickMarks(true)
+      .showTickMarks(false)
       .setColorCaptionLabel(color(255));
       
     List synths = Arrays.asList("kick", "snare", "hh", "htom", "mtom", "ltom");
