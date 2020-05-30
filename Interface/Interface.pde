@@ -98,6 +98,9 @@ void draw() {
    text("Envelope", 525, 155);
    text("Envelope", 525, 330);
    text("Envelope", 525, 505);
+   text("PAD1", 700, 165);
+   text("PAD2", 700, 340);
+   text("PAD3", 700, 515);
   
    fill(70);
    rect(150, 25, 330, 110, 10);
@@ -195,7 +198,6 @@ class PadController {
       .setRadius(40)
       .setRange(-20, 20)
       .setValue(0)
-      
       .setColorCaptionLabel(color(255,255,255));
     
     middle_knob = cp5.addKnob("middle")
