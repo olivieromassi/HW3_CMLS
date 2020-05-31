@@ -196,7 +196,7 @@ class PadController {
       .setPosition(x + 140, y + 10)
       .setId(id)
       .setRadius(40)
-      .setRange(-20, 20)
+      .setRange(-15, 15)
       .setValue(0)
       .setColorCaptionLabel(color(255,255,255));
     
@@ -204,7 +204,7 @@ class PadController {
       .setPosition(x + 250, y + 10)
       .setId(id)
       .setRadius(40)
-      .setRange(-20, 20)
+      .setRange(-15, 15)
       .setValue(0)
       .setColorCaptionLabel(color(255,255,255));
     
@@ -212,7 +212,7 @@ class PadController {
       .setPosition(x + 360, y + 10)
       .setId(id)
       .setRadius(40)
-      .setRange(-20, 20)
+      .setRange(-15, 15)
       .setValue(0)
       .setColorCaptionLabel(color(255,255,255));
     

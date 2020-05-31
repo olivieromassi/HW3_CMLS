@@ -21,7 +21,7 @@ SynthDef(\kick, {
 
 	boom = BPeakEQ.ar(boom, 100, 1.0, bass);
 	boom = BPeakEQ.ar(boom, 600, 1.0, middle);
-	boom = BPeakEQ.ar(boom, 1000, 1.0, treble);
+	boom = BPeakEQ.ar(boom, 1500, 1.0, treble);
 
     Out.ar(0,[boom,boom]);
 }).add;
@@ -50,7 +50,7 @@ SynthDef(\snare, {
 
 	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
 	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
-	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 1500, 1.0, treble);
 
     Out.ar(\out.kr(0), snd);
 }).add;
@@ -78,7 +78,7 @@ SynthDef(\htom, {
 
 	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
 	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
-	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 1500, 1.0, treble);
 
     Out.ar(\out.kr(0), snd);
 }).add;
@@ -102,7 +102,7 @@ SynthDef(\mtom, {
 
 	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
 	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
-	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 1500, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd, 0, 1));
 }).add;
@@ -126,7 +126,7 @@ SynthDef(\ltom, {
 
 	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
 	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
-	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 1500, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd, 0, 1));
 }).add;
@@ -154,7 +154,7 @@ SynthDef(\hh, {
 
 	snd = BPeakEQ.ar(snd, 100, 1.0, bass);
 	snd = BPeakEQ.ar(snd, 600, 1.0, middle);
-	snd = BPeakEQ.ar(snd, 1000, 1.0, treble);
+	snd = BPeakEQ.ar(snd, 1500, 1.0, treble);
 
     Out.ar(0,Pan2.ar(snd*10, 0, 1));
 }).add;
